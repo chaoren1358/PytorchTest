@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 import time
+import random
 
 def synthetic_data(w, b, num_examples):
     """生成 y = Xw + b + 噪声"""
@@ -8,6 +9,15 @@ def synthetic_data(w, b, num_examples):
     Y = torch.matmul(X, w) + b
     Y += torch.normal(0, 0.01, Y.shape)
     return X, Y.reshape((-1, 1))
+
+def data_iter(batch_size, features, labels):
+    num_examples = len(features)
+    indices = list(range(num_examples))
+    #这些样式是随机读取的，没有特定的顺序
+    random.shuffle(indices)
+    for i in range(0, num_examples, batch_size):
+        batch_indices = torch.tensor(indices[i:min(i+batch_size, num_examples)])
+        yield features[batch_indices], labels[batch_indices]
 
 class Timer: #@save
     """记录多次运行时间"""
