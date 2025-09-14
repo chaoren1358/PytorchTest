@@ -12,6 +12,8 @@ class DataArgument:#@save
                 img = cv2.imread(imgPath, cv2.IMREAD_UNCHANGED)
                 if img is None:
                     return None
+                h, w, c = img.shape
+                print(f"✅ oriimg读取图片成功: {imgPath}, 图片尺寸: {h}x{w}x{c}")
                 cv2.imwrite('oriimg.jpg', img)
                 return img
             if flag == 1 or flag == 2:
@@ -23,12 +25,16 @@ class DataArgument:#@save
                     return None
                 if flag == 1:
                     cv2.imwrite('colorImg.jpg', colorImg)
+                    h, w, c = colorImg.shape
+                    print(f"✅ colorImg读取图片成功: {imgPath}, 图片尺寸: {h}x{w}x{c}")
                     return colorImg
                 else:
                     grayImg = cv2.cvtColor(colorImg, cv2.COLOR_RGB2GRAY)
                     if grayImg is None:
                         return None
                     cv2.imwrite('gray.jpg', grayImg)
+                    h, w = grayImg.shape
+                    print(f"✅ grayImg读取图片成功: {imgPath}, 图片尺寸: {h}x{w}")
                     return grayImg
         else:
             print(f"❌ 文件不存在: {imgPath}")
